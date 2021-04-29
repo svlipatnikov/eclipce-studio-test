@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { Container } from '@material-ui/core';
+import Valute from './components/Valute/Valute';
+import Converter from './components/Converter/Converter';
+import getData from './api';
+import Context from './context';
 import './App.css';
 
-function App() {
+const App = () => {
+  let valuteData = null;
+
+  useEffect(() => {
+    getData().then((data) => {
+      valuteData = data;
+    });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Context.Provider value={{ valuteData }}>
+        <Container maxWidth="sm">
+          <Valute />
+          <Converter />
+        </Container>
+      </Context.Provider>
     </div>
   );
-}
+};
 
 export default App;
