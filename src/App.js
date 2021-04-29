@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react';
 import { Container } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { setValuteAction } from './redux/actions';
 import Valute from './components/Valute/Valute';
 import Converter from './components/Converter/Converter';
 import getData from './api';
-import Context from './context';
 import './App.css';
 
 const App = () => {
-  let valuteData = null;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getData().then((data) => {
-      valuteData = data;
+      console.log(data.Valute);
+      if (!!data.Valute) dispatch(setValuteAction(data.Valute));
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <Context.Provider value={{ valuteData }}>
-        <Container maxWidth="sm">
-          <Valute />
-          <Converter />
-        </Container>
-      </Context.Provider>
+      <Container maxWidth="sm">
+        <Valute />
+        <Converter />
+      </Container>
     </div>
   );
 };
